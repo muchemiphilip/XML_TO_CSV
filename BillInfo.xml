@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<BillInfo xsi:noNamespaceSchemaLocation="schema.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <BillNumber>8888</BillNumber>
+  <BillDate>2022-02-23</BillDate>
+  <BillTime>10:36:55.03</BillTime>
+  <BillerDetails code="9836" name="string">Jane</BillerDetails>
+  <Customer>
+    <Name>Prashant</Name>
+    <DOB>1985-02-24</DOB>
+    <Phone>7483824106</Phone>
+    <Mail>nkptech@gmail.com</Mail>
+    <Address>
+      <Street_Addr1>Bay area</Street_Addr1>
+      <Street_Addr2>5th cross</Street_Addr2>
+      <PostCode>A84HJK</PostCode>
+      <Country>USA</Country>
+    </Address>
+  </Customer>
+  <paymentDetails>
+    <paymentType>CARD</paymentType>
+  </paymentDetails>
+  <CartItems>
+    <ProductName Category="Cooking">OVEN</ProductName>
+    <UnitPrice>200</UnitPrice>
+    <Quantity>1</Quantity>
+  </CartItems>
+  <CartItems>
+    <ProductName Category="Book">The Intelligent Investor</ProductName>
+    <UnitPrice>650</UnitPrice>
+    <Quantity>2</Quantity>
+  </CartItems>
+  <CartItems>
+    <ProductName Category="Mobile">Apple</ProductName>
+    <UnitPrice>800</UnitPrice>
+    <Quantity>4</Quantity>
+  </CartItems>
+ 
+</BillInfo>

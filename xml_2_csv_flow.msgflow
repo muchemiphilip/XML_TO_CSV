@@ -1,0 +1,53 @@
+BROKER SCHEMA com.suluhisho.shemuchemi
+
+
+CREATE MODULE xml_2_csv_flow_Compute
+    CREATE FUNCTION MAIN() RETURNS BOOLEAN
+    BEGIN
+
+    DECLARE BillNumber,BillDate,BillTime,BillDetails,Name,DOB,Phone,Mail;
+
+    CREATE FIELD OutputRoot.DFLF.BillingInfoDetailsData.header;
+    CREATE FIELD OutputRoot.DFLF.BillingInfoDetailsData.record;
+    DECLARE headRef REFERENCE TO OutputRoot.DFLF.BillingInfoDetailsData.header;
+    DECLARE recordRef REFERENCE TO OutputRoot.DFLF.BillingInfoDetailsData.record;
+
+    DECLARE inputRef REFERENCE TO InputRoot.XMLNSC.BillInfo;
+    DECLARE outputRef REFERENCE TO OutputRoot.DFLF.;
+    DEACLARE BillOutRef REFERENCE TO OutputRoot.DFLF.BillInfo;
+
+    CREATE LASTCHILD OF headRef TYPE NameValue 'InvoiceNumber' VALUE InvoiceNumber;
+    CREATE LASTCHILD OF headRef TYPE NameValue 'InvoiceDate' VALUE InvoiceNumber;
+    CREATE LASTCHILD OF headRef TYPE NameValue 'CashierName' VALUE InvoiceNumber;
+    CREATE LASTCHILD OF headRef TYPE NameValue 'CustomerName' VALUE InvoiceNumber;
+    CREATE LASTCHILD OF headRef TYPE NameValue 'Customer_Phone' VALUE InvoiceNumber;
+    CREATE LASTCHILD OF headRef TYPE NameValue 'Category' VALUE InvoiceNumber;
+    CREATE LASTCHILD OF headRef TYPE NameValue 'ProductName' VALUE InvoiceNumber;
+    CREATE LASTCHILD OF headRef TYPE NameValue 'UnitPrice' VALUE InvoiceNumber;
+    CREATE LASTCHILD OF headRef TYPE NameValue 'Quantity' VALUE Quantity;
+    
+
+    SET BillNumber = inputRef.BillNumber;
+    SET BillDate = inputRef.BillDate;
+    SET BillDetails = inputRef.BillDetails;
+    SET Name = inputRef.Customer.Name;
+    SET Phone = inputRef.Phone;
+
+    DECLARE credRef REFERENCE TO inputRef.XMLNSC.BillInfo.CartItems[1];
+    DEACLARE i INTEGER 1;
+    WHILE(LASTMOVE(credRef))DO
+        CREATE LASTCHILD OF BillOutRef.record[i] TYPE NameValue 'InvoiceNumber' VALUE BillNumber;
+        CREATE LASTCHILD OF BillOutRef.record[i] TYPE NameValue 'InvoiceDate' VALUE BillDate;
+        CREATE LASTCHILD OF BillOutRef.record[i] TYPE NameValue 'CashierName' VALUE BillInfo.BillDetails;
+        CREATE LASTCHILD OF BillOutRef.record[i] TYPE NameValue 'CustomerName' VALUE Name;
+        CREATE LASTCHILD OF BillOutRef.record[i] TYPE NameValue 'Customer_Phone' VALUE Phone;
+        CREATE LASTCHILD OF BillOutRef.record[i] TYPE NameValue 'Category' VALUE cartRef.ProductName(XMLNSC.Attribute)Category;
+        CREATE LASTCHILD OF BillOutRef.record[i] TYPE NameValue 'UnitPrice' VALUE cartRef.UnitPrice;
+        CREATE LASTCHILD OF BillOutRef.record[i] TYPE NameValue 'Quantity' VALUE cartRef.Quantity;
+
+    SET i = i + 1;
+    MOVE cartRef NEXTSIBLING;
+    END WHILE;
+        RETURNS TRUE;
+    END;
+END MODULE;
